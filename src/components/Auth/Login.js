@@ -1,7 +1,7 @@
 import React,{ useState, useCallback, useEffect } from "react"
-import {Form, Segment, Grid, Header, Button} from "semantic-ui-react"
+import {Form, Segment, Grid, Header, Button,Message} from "semantic-ui-react"
 import firebase from "../../firebase"
-
+import {Link} from "react-router-dom"
 
 const Login = () => {
   const [mail, setMail] = useState("")
@@ -47,6 +47,9 @@ const Login = () => {
               <Button fluid>Submit</Button>
             </Segment>
           </Form>
+          <Message>
+            You Don't have Account ? <Link to="/register">Register</Link>
+            </Message>
         </Grid.Column>
       </Grid>
     </div>

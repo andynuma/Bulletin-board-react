@@ -14,21 +14,24 @@ import { Provider, Store } from "./store"
 
 const Root = (props) => {
 
-  // const {state, dispatch} = useContext(Store)
+  const {state, dispatch} = useContext(Store)
 
   useEffect(() => {
+    // let currentUser = firebase.auth().onAuthStateChanged()
+    // console.log(currentUser)
     firebase.auth().onAuthStateChanged( user => {
       if(user){
         console.log(user)
         props.history.push("/")
-        // dispatch({type:"SET_USER", payload:user})
+        dispatch({type:"SET_USER", payload:user})
         // console.log(state)
       } else {
-        // dispatch({type:"CLEAR_USER"})
+        props.history.push("/login")
+        dispatch({type:"CLEAR_USER"})
         console.log("not login")
       }
     })
-  })
+  },[])
 
   return (
       <Switch>
