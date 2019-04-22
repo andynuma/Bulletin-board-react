@@ -1,15 +1,21 @@
-import React,{ useState, useCallback } from "react"
+import React,{ useState, useCallback,useContext } from "react"
 import Answer from "./Answer"
+import {Store} from "../../store"
+import { Segment, Button } from "semantic-ui-react"
 
-// TODO:Discriptionの下にさらに回答的なものを追加できるようにすること
 const Topic = ({ title, discription }) => {
   const [answer, setAnswer] = useState("")
+  const [answerId, setAnswerId] = useState(1)
   const [answers, addAnswer] = useState([])
+
+  const { state } = useContext(Store)
 
   const displayAnswer = (answerArray =>
     answerArray.map( ans => (
       <Answer
-        answer={ans}
+        key={ans.id}
+        answer={ans.content}
+        user={state.currentUser}
       />
     ))
   )
@@ -18,23 +24,29 @@ const Topic = ({ title, discription }) => {
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault()
-    addAnswer([...answers,answer])
+    setAnswerId(answer => answer + 1)
+    addAnswer([...answers,{ id:answerId, content:answer }])
     setAnswer("")
   })
 
   return(
-    <div>
-      <br/>
-      Tile is {title}
-      <br/>
-      Discription : {discription}
+    <Segment>
+      <h4>
+        Title : {title}
+      </h4>
+      <h4>
+        UserName : {state.currentUser.displayName}
+      </h4>
+      <p>
+        Discription : {discription}
+      </p>
       <br/>
       <form onSubmit={handleSubmit}>
         <textarea type="text" value={answer} name="answer" onChange={handleChange} placeholder="Write your answer"/>
-        <button type="submit" value="Submit" onSubmit={handleSubmit}>Submit</button>
+        <Button  style={{marginBottm:100}}  type="submit" value="Submit" onSubmit={handleSubmit}>Submit</Button>
       </form>
       {displayAnswer(answers)}
-    </div>
+    </Segment>
   )
 }
 

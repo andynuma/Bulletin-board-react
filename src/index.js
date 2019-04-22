@@ -11,7 +11,6 @@ import firebase from "firebase"
 // reducer
 import { Provider, Store } from "./store"
 
-
 const Root = (props) => {
 
   const {state, dispatch} = useContext(Store)
@@ -26,8 +25,8 @@ const Root = (props) => {
         dispatch({type:"SET_USER", payload:user})
         // console.log(state)
       } else {
-        props.history.push("/login")
         dispatch({type:"CLEAR_USER"})
+        props.history.push("/login")
         console.log("not login")
       }
     })
@@ -43,7 +42,6 @@ const Root = (props) => {
 }
 
 const RootWithAuth = withRouter(Root)
-
 
 ReactDOM.render(
   <Provider>

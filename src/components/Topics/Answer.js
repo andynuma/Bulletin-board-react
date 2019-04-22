@@ -1,20 +1,25 @@
-import React,{ useCallback} from "react"
+import React,{ useCallback } from "react"
+import {Message,Button,Segment} from "semantic-ui-react"
 
-const Answer = ({ answer }) => {
+const Answer = ({ answer, user }) => {
 
   const handleClick = () => sendEth()
 
   const sendEth = () => {
+    //TODO:ここにweb3呼び出し
     console.log("Send 1 ETH")
   }
 
   return(
-    <div>
-      {answer}
-      <button onClick={handleClick}>
+    <Segment>
+      user : {user.displayName}
+      <Message>
+        {answer}
+      </Message>
+      <Button onClick={handleClick}>
         Send
-      </button>
-    </div>
+      </Button>
+    </Segment>
   )
 }
 
