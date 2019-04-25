@@ -1,7 +1,7 @@
 import React,{useState,useContext,useEffect} from "react"
 import firebase from "../../firebase"
 import { Store } from "../../store"
-import { Grid,Image } from "semantic-ui-react"
+import {Image, Segment } from "semantic-ui-react"
 
 const UserPanel = (props) => {
 
@@ -13,15 +13,15 @@ const UserPanel = (props) => {
   useEffect(
     () =>  {
       if(state.currentUser !== null){
-        console.log(state)
-        console.log(state.currentUser)
-        console.log(state.currentUser.displayName)
-        console.log(state.currentUser.photoURL)
+        // console.log(state)
+        // console.log(state.currentUser)
+        // console.log(state.currentUser.displayName)
+        // console.log(state.currentUser.photoURL)
         setName(state.currentUser.displayName)
         setPhotoUrl(state.currentUser.photoURL)
       }
       return () => {
-        console.log("unmount")
+        // console.log("unmount")
       }
     },[state.currentUser])
 
@@ -33,13 +33,13 @@ const UserPanel = (props) => {
   }
 
   return(
-    <Grid>
-      <Grid.Column>
-        <Image src={photoURL} avatar/>
-           {name}
-          <button onClick={handleClick}>Sign Out</button>
-      </Grid.Column>
-    </Grid>
+    <Segment.Group>
+      <Segment floated>
+          <Image src={photoURL} avatar/>
+          {name}
+        <button onClick={handleClick} style={{marginLeft:10}}>Sign Out</button>
+      </Segment>
+    </Segment.Group>
   )
 }
 

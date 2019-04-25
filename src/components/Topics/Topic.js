@@ -1,51 +1,43 @@
-import React,{ useState, useCallback,useContext } from "react"
-import Answer from "./Answer"
-import {Store} from "../../store"
-import { Segment, Button } from "semantic-ui-react"
+import React,{ useContext,useEffect } from "react"
+import { Store } from "../../store"
+import { Segment,Comment } from "semantic-ui-react"
+import { BrowserRouter as Router, Route, Link, withRouter } from "react-router-dom";
+import TopicContent from "./TopicContent"
 
-const Topic = ({ title, discription }) => {
-  const [answer, setAnswer] = useState("")
-  const [answerId, setAnswerId] = useState(1)
-  const [answers, addAnswer] = useState([])
+const Topic = ({ title, discription,info }, props) => {
 
   const { state } = useContext(Store)
 
-  const displayAnswer = (answerArray =>
-    answerArray.map( ans => (
-      <Answer
-        key={ans.id}
-        answer={ans.content}
-        user={state.currentUser}
-      />
-    ))
-  )
+  useEffect(()  => {
+    // console.log(props.history)
+    // console.log(info)
+  },[])
 
-  const handleChange = useCallback((e) => setAnswer(e.target.value))
-
-  const handleSubmit = useCallback((e) => {
-    e.preventDefault()
-    setAnswerId(answer => answer + 1)
-    addAnswer([...answers,{ id:answerId, content:answer }])
-    setAnswer("")
-  })
+  const handleClick = () => {
+    console.log(`${info.id}`)  //firebase側のid
+    props.history.push(`/topics/${info.id}`)
+    console.log(props.history)
+  }
 
   return(
     <Segment>
-      <h4>
-        Title : {title}
-      </h4>
-      <h4>
-        UserName : {state.currentUser.displayName}
-      </h4>
-      <p>
-        Discription : {discription}
-      </p>
-      <br/>
-      <form onSubmit={handleSubmit}>
-        <textarea type="text" value={answer} name="answer" onChange={handleChange} placeholder="Write your answer"/>
-        <Button  style={{marginBottm:100}}  type="submit" value="Submit" onSubmit={handleSubmit}>Submit</Button>
-      </form>
-      {displayAnswer(answers)}
+        <Comment>
+          Title : {title}
+        </Comment>
+        <Comment>
+          UserName : {state.currentUser.displayName}
+        </Comment>
+        <Comment>
+          Discription : {discription}
+        </Comment>
+        <br/>
+
+        <Link to={`/topics/${info.id}`} onClick={handleClick} >Go topic page</Link>
+        <Route path={`/topics/:id`} render={info => <TopicContent info={info} />} />
+
+        {/* <Link to={`/topics/${info.id}`} >Go topic page</Link> */}
+        {/* <Route path="/>topics" component={Tocics}/> */}
+        {/* <Route path={`/topics/:id`}  component={TopicContent} /> */}
     </Segment>
   )
 }

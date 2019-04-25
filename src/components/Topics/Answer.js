@@ -1,4 +1,4 @@
-import React,{ useCallback } from "react"
+import React from "react"
 import {Message,Button,Segment} from "semantic-ui-react"
 
 const Answer = ({ answer, user }) => {

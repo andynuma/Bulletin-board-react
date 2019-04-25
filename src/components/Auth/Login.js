@@ -6,7 +6,7 @@ import {Link} from "react-router-dom"
 const Login = () => {
   const [mail, setMail] = useState("")
   const [password, setPassword] = useState("")
-  const [errors, setError] = useState([])
+  // const [errors, setError] = useState([])
 
   useEffect(() => {
     console.log("mounted")
@@ -18,7 +18,6 @@ const Login = () => {
 
 
   const isFormValid = (mail, password) => mail && password
-
 
   const handleSubmit = async(e) => {
     e.preventDefault()

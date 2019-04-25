@@ -1,28 +1,28 @@
 import React,{ useState, useCallback,useContext,useEffect } from "react"
 import Topic from "./Topic.js"
-import Linkfy from "react-linkify"
 import firebase from "firebase"
 import { Store } from "../../store"
+import { Header } from "semantic-ui-react"
+import { withRouter } from "react-router-dom";
 
-
-const Topics = () => {
-  // const [id,setId] = useState(0)
+const Topics = (props) => {
   const [title, setTitle] = useState("")
   const [discription, setDiscription] = useState("")
-  const [topics,addTopics] = useState([])
+  const [topics,setTopics] = useState([])
 
   const { state } = useContext(Store)
 
   useEffect(() => {
       addTopicListener()
+      // console.log(topics)
+      // console.log(props)
+      console.log(props.history)
   },[])
 
   const handleSubmit = (event) => {
-    // setTopic(event.target.value)
     event.preventDefault()
-    // setId(id => id + 1)
     if(title !=="" && discription !== ""){
-      addTopics(
+      setTopics(
         [...topics,
           { title: title, discription: discription }
         ]
@@ -54,10 +54,10 @@ const Topics = () => {
     const snap = await db.collection("topics").get()
     await snap.forEach((doc) => {
       loadedTopics.push(
-        { id: `${doc.data().id}`, title: `${doc.data().title}`, discription: `${doc.data().discription}` }
+        { id: `${doc.id}`, title: `${doc.data().title}`, discription: `${doc.data().discription}` }
       )
     })
-    addTopics(loadedTopics)
+    setTopics(loadedTopics)
   }
 
   const onTitleChange = useCallback((e) => setTitle(e.target.value),[])
@@ -65,18 +65,21 @@ const Topics = () => {
 
   const displayTopics = (topicsArray) => (
     topicsArray.map(topicInfo => (
-      <Topic
-        key={topicInfo.id}
-        title={topicInfo.title}
-        discription={topicInfo.discription}
-      />
-    ))
-  )
+          <Topic
+            info={topicInfo}
+            key={topicInfo.id}
+            title={topicInfo.title}
+            discription={topicInfo.discription}
+          />
+        )
+  ))
 
   return(
     <div style={{marginLeft:200}}>
+      <Header as="h2">
+        Topics
+      </Header>
       <form onSubmit={handleSubmit} className="topic_form">
-      Topics
       <ul>
         <li>
           <label>Title : </label>
@@ -97,4 +100,4 @@ const Topics = () => {
   )
 }
 
-export default Topics;
+export default withRouter(Topics);
