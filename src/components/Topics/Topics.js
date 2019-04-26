@@ -5,7 +5,7 @@ import { Store } from "../../store"
 import { Header } from "semantic-ui-react"
 import { withRouter } from "react-router-dom";
 
-const Topics = (props) => {
+const Topics = () => {
   const [title, setTitle] = useState("")
   const [discription, setDiscription] = useState("")
   const [topics,setTopics] = useState([])
@@ -14,9 +14,6 @@ const Topics = (props) => {
 
   useEffect(() => {
       addTopicListener()
-      // console.log(topics)
-      // console.log(props)
-      console.log(props.history)
   },[])
 
   const handleSubmit = (event) => {
@@ -65,12 +62,12 @@ const Topics = (props) => {
 
   const displayTopics = (topicsArray) => (
     topicsArray.map(topicInfo => (
-          <Topic
-            info={topicInfo}
-            key={topicInfo.id}
-            title={topicInfo.title}
-            discription={topicInfo.discription}
-          />
+        <Topic
+          info={topicInfo}
+          key={topicInfo.id}
+          title={topicInfo.title}
+          discription={topicInfo.discription}
+        />
         )
   ))
 
@@ -94,7 +91,7 @@ const Topics = (props) => {
         </li>
       </ul>
       </form>
-      {/* //TODO:ページ遷移をさせる */}
+
       {displayTopics(topics)}
     </div>
   )

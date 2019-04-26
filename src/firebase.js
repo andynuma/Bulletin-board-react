@@ -1,8 +1,6 @@
 import firebase from "firebase"
-// import firebase from "firebase/firestore"
 
 
-// Initialize Firebase
 var config = {
     apiKey: "AIzaSyCt0IedyVg1WDokUfM_Kn8RJW923FRJs_8",
     authDomain: "board-ethereum.firebaseapp.com",

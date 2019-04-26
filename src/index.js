@@ -7,6 +7,7 @@ import Login from "./components/Auth/Login"
 import Register from "./components/Auth/Register"
 import firebase from "firebase"
 import 'semantic-ui-css/semantic.min.css'
+import TopicContent from './components/Topics/TopicContent';
 
 // reducer
 import { Provider, Store } from "./store"
@@ -16,19 +17,14 @@ const Root = (props) => {
   const { dispatch } = useContext(Store)
 
   useEffect(() => {
-    // let currentUser = firebase.auth().onAuthStateChanged()
-    // console.log(currentUser)
     firebase.auth().onAuthStateChanged( user => {
       if(user){
         console.log("user",user)
         props.history.push("/")
-        // console.log(props.history)
         dispatch({type:"SET_USER", payload:user})
-        // console.log(state)
       } else {
         props.history.push("/login")
         dispatch({type:"CLEAR_USER"})
-        // console.log("not login")
       }
     })
   },[])
@@ -38,6 +34,7 @@ const Root = (props) => {
         <Route exact path="/" component={App}/>
         <Route path="/login" component={Login}/>
         <Route path="/register" component={Register}/>
+        <Route  path="/:id" component={TopicContent}/>
       </Switch>
   )
 }

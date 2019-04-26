@@ -2,7 +2,7 @@ import React, { useReducer } from "react"
 import reducer from "./reducer"
 
 const initialState = {
-  currentUser: null
+  currentUser: null,
 }
 
 const Store = React.createContext()
