@@ -3,6 +3,7 @@ import reducer from "./reducer"
 
 const initialState = {
   currentUser: null,
+  isLoading:true
 }
 
 const Store = React.createContext()

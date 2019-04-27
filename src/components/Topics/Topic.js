@@ -11,6 +11,7 @@ const Topic = ({ info }) => {
     <Segment>
         <Comment>
           Title : {info.title}
+          {/* {info.id} */}
         </Comment>
         <Comment>
           UserName : {state.currentUser.displayName}

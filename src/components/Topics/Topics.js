@@ -25,9 +25,9 @@ const Topics = () => {
         ]
       )
     }
+    saveTopic()
     setTitle("")
     setDiscription("")
-    saveTopic()
     console.log(topics)
   }
 
@@ -53,6 +53,7 @@ const Topics = () => {
       loadedTopics.push(
         { id: `${doc.id}`, title: `${doc.data().title}`, discription: `${doc.data().discription}` }
       )
+      console.log(doc.id)
     })
     setTopics(loadedTopics)
   }
@@ -77,19 +78,19 @@ const Topics = () => {
         Topics
       </Header>
       <form onSubmit={handleSubmit} className="topic_form">
-      <ul>
-        <li>
-          <label>Title : </label>
-          <input type="text" value={title}  name="title" onChange={onTitleChange} placeholder="Topic Name"/>
-        </li>
-        <li>
-          <label>Discription : </label>
-          <textarea type="text" value={discription}  onChange={onDiscriptionChange} placeholder="Topic discription"/>
-        </li>
-        <li>
-          <input type="submit" value="Submit"/>
-        </li>
-      </ul>
+        <ul>
+          <li>
+            <label>Title : </label>
+            <input type="text" value={title}  name="title" onChange={onTitleChange} placeholder="Topic Name"/>
+          </li>
+          <li>
+            <label>Discription : </label>
+            <textarea type="text" value={discription}  onChange={onDiscriptionChange} placeholder="Topic discription"/>
+          </li>
+          <li>
+            <input type="submit" value="Submit"/>
+          </li>
+        </ul>
       </form>
 
       {displayTopics(topics)}

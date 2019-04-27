@@ -3,7 +3,8 @@ const reducer = (state={}, action) => {
     case "SET_USER":
     // console.log("dispatch user",action.payload)
     return{
-      currentUser: action.payload
+      currentUser: action.payload,
+      isLoading:false
     }
     case "CLEAR_USER":
       return{

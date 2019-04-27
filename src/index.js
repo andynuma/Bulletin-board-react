@@ -11,10 +11,11 @@ import TopicContent from './components/Topics/TopicContent';
 
 // reducer
 import { Provider, Store } from "./store"
+import Spinner from './Spinner';
 
 const Root = (props) => {
 
-  const { dispatch } = useContext(Store)
+  const { state, dispatch } = useContext(Store)
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged( user => {
@@ -30,11 +31,12 @@ const Root = (props) => {
   },[])
 
   return (
+    (state.isLoading) ?  <Spinner/> :
       <Switch>
         <Route exact path="/" component={App}/>
         <Route path="/login" component={Login}/>
         <Route path="/register" component={Register}/>
-        <Route  path="/:id" component={TopicContent}/>
+        <Route path="/:id" component={TopicContent}/>
       </Switch>
   )
 }
