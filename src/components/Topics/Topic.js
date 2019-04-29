@@ -1,4 +1,4 @@
-import React,{ useContext } from "react"
+import React,{ useState,useContext, useEffect } from "react"
 import { Store } from "../../store"
 import { Segment,Comment } from "semantic-ui-react"
 import { Link, withRouter} from "react-router-dom";

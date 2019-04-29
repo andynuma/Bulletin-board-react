@@ -21,6 +21,7 @@ const Root = (props) => {
     firebase.auth().onAuthStateChanged( user => {
       if(user){
         console.log("user",user)
+        console.log(props.history)
         props.history.push("/")
         dispatch({type:"SET_USER", payload:user})
       } else {

@@ -34,7 +34,7 @@ const UserPanel = (props) => {
 
   return(
     <Segment.Group>
-      <Segment floated>
+      <Segment>
           <Image src={photoURL} avatar/>
           {name}
         <button onClick={handleClick} style={{marginLeft:10}}>Sign Out</button>

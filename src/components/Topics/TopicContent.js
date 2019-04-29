@@ -14,31 +14,21 @@ const TopicContent = (props) => {
 
   const { state } = useContext(Store)
 
-  const displayAnswer = (answerArray =>
+  const displayAnswer = (answerArray) =>(
     answerArray.map( ans => (
       <Answer
         key={ans.id}
-        answer={ans.answer}
+        answer={ans}
         user={state.currentUser}
       />
     ))
   )
 
-  useEffect(() => {
-    // const db =  firebase.firestore()
-    // if( db.collection("topics").doc(props.location.state.topicInfo.id).collection("answers") !== undefined){
-      addAnswerListener()
-    // }
-    // console.log(db.collection("topics").doc(props.location.state.topicInfo.id).collection("answers"))
-    return (() =>  {
-      console.log("unmout")
-      const db = firebase.firestore()
-      const unsubscribe = db.collection("topics").onSnapshot(function () {});
-      // ...
-      // Stop listening to changes
-      unsubscribe();
-    })
-  },[answers])
+  useEffect(
+    () => {
+        addAnswerListener()
+        console.log("useEffect:",answer)
+    },[])
 
   const saveAnswer = async() => {
     const db =  await firebase.firestore()
@@ -57,43 +47,34 @@ const TopicContent = (props) => {
     let loadedAnswers = []
     if(props.location.state.topicInfo.id !== undefined){
       const db =  await firebase.firestore()
-      //TODO:props.location.state.topicInfo.idがundefinedになっているから、docの中が取れていない
-      console.log(props.location.state.topicInfo.id)
-      // console.log(db.collection("topics").doc(props.location.state.topicInfo.id))
       const snap = await db.collection("topics").doc(props.location.state.topicInfo.id).collection("answers").get()
-      // console.log("snap",snap)
       await snap.forEach((doc) => {
         loadedAnswers.push(
           { id: `${doc.id}`, answer: `${doc.data().answer}`, user: `${doc.data().createdUser}` }
         )
       })
       addAnswer(loadedAnswers)
+      console.log(loadedAnswers)
     }
   }
 
   const handleChange = useCallback((e) => setAnswer(e.target.value),[])
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault()
     if(answer !== ""){
-      await setAnswerId(answerId => answerId + 1)
-      await addAnswer([...answers,{ id : answerId, content : answer }])
-      console.log(answer)
+      setAnswerId(answerId => answerId + 1)
+      addAnswer([...answers,{ id : answerId, answer : answer }])
+      console.log("submit",answer)
       console.log(answers)
-      await saveAnswer()
-      await setAnswer("")
+      saveAnswer()
+      setAnswer("")
     }
-  }
-  // const handleSubmit = useCallback((e) => {
-  //   e.preventDefault()
-  //   setAnswerId(answer => answer + 1)
-  //   addAnswer([...answers,{ id : answerId, content : answer }])
-  //   saveAnswer()
-  //   setAnswer("")
-  // })
-  
+  })
+
+
   return(
-    <Segment>
+    <div>
       <Comment>
         Title : {props.location.state.topicInfo.title}
       </Comment>
@@ -110,7 +91,7 @@ const TopicContent = (props) => {
 
       {displayAnswer(answers)}
 
-    </Segment>
+    </div>
   )
 }
 
