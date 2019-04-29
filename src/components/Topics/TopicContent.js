@@ -9,7 +9,7 @@ import firebase from "../../firebase"
 const TopicContent = (props) => {
 
   const [answer, setAnswer] = useState("")
-  const [answerId, setAnswerId] = useState(1)
+  // const [answerId, setAnswerId] = useState(1)
   const [answers, addAnswer] = useState([])
 
   const { state } = useContext(Store)
@@ -28,14 +28,17 @@ const TopicContent = (props) => {
     () => {
         addAnswerListener()
         console.log("useEffect:",answer)
+        console.log(Date.now())
     },[])
 
   const saveAnswer = async() => {
     const db =  await firebase.firestore()
     try{
+      const timestamp = Date.now()
       const res = await db.collection("topics").doc(props.location.state.topicInfo.id).collection("answers").add({
         answer:answer,
-        createdUser: state.currentUser.displayName
+        createdUser: state.currentUser.displayName,
+        createdAt:timestamp
       })
       console.log(res.id)
     } catch (error){
@@ -47,10 +50,10 @@ const TopicContent = (props) => {
     let loadedAnswers = []
     if(props.location.state.topicInfo.id !== undefined){
       const db =  await firebase.firestore()
-      const snap = await db.collection("topics").doc(props.location.state.topicInfo.id).collection("answers").get()
+      const snap = await db.collection("topics").doc(props.location.state.topicInfo.id).collection("answers").orderBy("createdAt").get()
       await snap.forEach((doc) => {
         loadedAnswers.push(
-          { id: `${doc.id}`, answer: `${doc.data().answer}`, user: `${doc.data().createdUser}` }
+          { id: `${doc.id}`, answer: `${doc.data().answer}`, user: `${doc.data().createdUser}` , createdAt: `${doc.data().createdAt}`}
         )
       })
       addAnswer(loadedAnswers)
@@ -63,8 +66,8 @@ const TopicContent = (props) => {
   const handleSubmit = useCallback((e) => {
     e.preventDefault()
     if(answer !== ""){
-      setAnswerId(answerId => answerId + 1)
-      addAnswer([...answers,{ id : answerId, answer : answer }])
+      // setAnswerId(answerId => answerId + 1)
+      addAnswer([...answers,{ answer : answer }])
       console.log("submit",answer)
       console.log(answers)
       saveAnswer()

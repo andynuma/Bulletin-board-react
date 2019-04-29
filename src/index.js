@@ -22,6 +22,9 @@ const Root = (props) => {
       if(user){
         console.log("user",user)
         console.log(props.history)
+        //トピックページのリロードに対応したいけどできなかった
+        // Linkタグによってstateを渡しているので、トピックページからエントリーすると
+        // stateが未定義のままレンダリングが走って、undefinedになる
         props.history.push("/")
         dispatch({type:"SET_USER", payload:user})
       } else {

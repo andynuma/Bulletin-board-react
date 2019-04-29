@@ -34,11 +34,14 @@ const Topics = () => {
 
   const saveTopic = async() => {
     const db =  await firebase.firestore()
+    const timeStamp = await Date.now()
     try{
       const res = await db.collection("topics").add({
         title:title,
         discription:discription,
-        createdUser: state.currentUser.displayName
+        createdUser: state.currentUser.displayName,
+        createdAt:timeStamp
+        
       })
       console.log(res.id)
     } catch (error){
@@ -49,7 +52,7 @@ const Topics = () => {
   const addTopicListener = async() => {
     let loadedTopics = []
     const db =  await firebase.firestore()
-    const snap = await db.collection("topics").get()
+    const snap = await db.collection("topics").orderBy("createdAt").get()
     await snap.forEach((doc) => {
       loadedTopics.push(
         { id: `${doc.id}`, title: `${doc.data().title}`, discription: `${doc.data().discription}` }
