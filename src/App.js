@@ -1,15 +1,10 @@
-import React,{ useEffect } from 'react';
+import React from 'react';
 import "./App.css";
 import Topics from "./components/Topics/Topics"
 import SidePanel from "./components/SidePanel/SidePanel"
 import { Grid } from "semantic-ui-react"
 
-
 const App = () => {
-
-  useEffect(() => {
-    
-  },[])
 
   return (
     <div>

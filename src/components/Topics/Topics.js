@@ -14,7 +14,7 @@ const Topics = () => {
 
   useEffect(() => {
       addTopicListener()
-      console.log("changed")
+      console.log("topics are added")
   },[setTopics])
 
   const handleSubmit = (event) => {

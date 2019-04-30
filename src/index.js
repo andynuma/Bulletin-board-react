@@ -20,7 +20,7 @@ const Root = (props) => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged( user => {
       if(user){
-        console.log("user",user)
+        console.log("user : ",user)
         dispatch({type:"SET_USER", payload:user})
         props.history.push("/")
       } else {
@@ -31,7 +31,7 @@ const Root = (props) => {
   },[])
 
   return (
-    (state.isLoading) ?  <Spinner/> :
+    (state.isLoading) ? <Spinner/> :
       <Switch>
         <Route exact path="/" component={App}/>
         <Route path="/login" component={Login}/>

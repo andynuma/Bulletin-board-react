@@ -1,10 +1,9 @@
-import React,{useState,useContext,useEffect} from "react"
+import React,{ useContext } from "react"
 import firebase from "../../firebase"
 import { Store } from "../../store"
 import {Image, Segment } from "semantic-ui-react"
-import Spinner from "../../Spinner";
 
-const UserPanel = (props) => {
+const UserPanel = () => {
 
   const {state} = useContext(Store)
 
@@ -16,7 +15,6 @@ const UserPanel = (props) => {
   }
 
   return(
-    (state.currentUser.displayName === null || state.currentUser.photoURL === null) ? <Spinner/>:
     <Segment.Group>
       <Segment>
           <Image src={state.currentUser.photoURL} avatar/>

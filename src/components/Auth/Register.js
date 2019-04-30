@@ -1,5 +1,5 @@
 import React,{ useState, useCallback, useContext} from "react"
-import {Form, Segment, Grid, Header, Button} from "semantic-ui-react"
+import {Form, Segment, Grid, Header, Button, Message} from "semantic-ui-react"
 import firebase from "../../firebase"
 import md5 from "md5"
 import { Store } from "../../store"
@@ -11,19 +11,14 @@ const Register = () => {
   const [password, setPassword] = useState("")
   const [passwordConfirm, setPasswordConfirm] = useState("")
   const [errors, setError] = useState([])
+  const [loading,setLoading] = useState(false)
 
-  const {dispatch, state } = useContext(Store)
-
-  // useEffect(() => {
-  //   console.log("mounted")
-  //   // console.log(db)
-  // },[])
+  const { dispatch } = useContext(Store)
 
   const handleNameChange = useCallback((e) => setName(e.target.value))
   const handleMailChange = useCallback((e) => setMail(e.target.value))
   const handlePassWordChange = useCallback((e) => setPassword(e.target.value))
   const handlePCChange = useCallback((e) => setPasswordConfirm(e.target.value))
-
 
   const isPasswordValid = (password, passwordConfirm) => {
     if(password.length < 6 || passwordConfirm.length < 6){
@@ -41,12 +36,13 @@ const Register = () => {
 
   const isFormValid = () => {
     let error;
+    let errors = []
     if(isFormEmpty(name,mail,password,passwordConfirm)){
       error = "fill all fields"
       setError(errors.concat(error))
       return false
     } else if(!isPasswordValid(password,passwordConfirm)){
-      error = "PassWord is not valid"
+      error = "Password is not valid"
       setError(errors.concat(error))
       return false
     } else {
@@ -63,10 +59,13 @@ const Register = () => {
     })
   }
 
+  const displayErrors = (errors) => errors.map((error,i) => <p key={i}>{error}</p>)
+
   const handleSubmit = async(e) => {
     e.preventDefault()
     try{
       if(isFormValid()){
+        setLoading(true)
         const { user } = await firebase.auth().createUserWithEmailAndPassword(mail, password)
         await user.updateProfile({
           displayName : name,
@@ -94,9 +93,15 @@ const Register = () => {
               <Form.Input type="email" value={mail} onChange={handleMailChange} placeholder="email"/>
               <Form.Input type="password" value={password} onChange={handlePassWordChange} placeholder="password"/>
               <Form.Input type="password" value={passwordConfirm} onChange={handlePCChange} placeholder="password Confirm"/>
-              <Button fluid>Submit</Button>
+              <Button fluid disabled={loading}>Submit</Button>
             </Segment>
           </Form>
+          {errors.length > 0 && (
+            <Message>
+              <h4>Error</h4>
+              {displayErrors(errors)}
+            </Message>
+          )}
         </Grid.Column>
       </Grid>
     </div>
