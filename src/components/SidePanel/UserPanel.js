@@ -12,18 +12,66 @@ const UserPanel = (props) => {
 
   useEffect(
     () =>  {
-      if(state.currentUser !== null){
+      // if(state.currentUser !== null){
         // console.log(state)
         // console.log(state.currentUser)
-        // console.log(state.currentUser.displayName)
+        console.log(state.currentUser.displayName)
         // console.log(state.currentUser.photoURL)
-        setName(state.currentUser.displayName)
-        setPhotoUrl(state.currentUser.photoURL)
-      }
+        // setName(state.currentUser.displayName)
+        // setPhotoUrl(state.currentUser.photoURL)
+      firebase.auth().onAuthStateChanged(user => {
+        console.log("in userpanel",user)
+        console.log("in userpanel",user.displayName)
+        console.log("in userpanel",user.photoURL)
+      })
+      // }
+      getUserData()
       return () => {
         // console.log("unmount")
       }
-    },[state.currentUser])
+    },[])
+
+
+  const getUserData = async() => {
+
+      const db = await firebase.firestore()
+      if(state.currentUser.displayName !== null) {
+        const snap = await db.collection("users").doc(state.currentUser.displayName).get()
+        console.log(snap)
+        console.log(snap.id)
+        console.log(snap.data())
+        console.log(snap.data().name)
+        console.log(snap.data().avator)
+        if(snap.data().name !== null && snap.data().avator){
+          const name = await snap.data().name
+          const avator = await snap.data().avator
+          setName(name)
+          setPhotoUrl(avator)
+        }
+      }
+      // const snap = await db.collection("users").doc(state.currentUser.uid).get()
+      // snap.idがfirestoreのnameと一致し
+      console.log(state.currentUser)
+      // await snap.forEach((doc) =>  {
+      //   console.log(doc.data())
+      //   console.log(doc.data().name)
+      //   console.log(doc.data().avatar)
+    // })
+
+    // firebase.auth().onAuthStateChanged(user => {
+    //   console.log("in userpanel",user)
+    //   console.log("in userpanel",user.displayName)
+    //   console.log("in userpanel",user.photoURL)
+    //   const name = user.displayName
+    //   const avatar = user.displayName
+
+    //   if(user.displayName !== null && user.photoURL !== null) {
+    //     setName(user.displayName)
+    //     setPhotoUrl(user.photoURL)
+    //   }
+    // })
+  }
+
 
   const handleClick = async() => {
   firebase

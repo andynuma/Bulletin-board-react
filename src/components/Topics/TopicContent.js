@@ -19,7 +19,7 @@ const TopicContent = (props) => {
       <Answer
         key={ans.id}
         answer={ans}
-        user={state.currentUser}
+        user={ans.user}
       />
     ))
   )
@@ -67,7 +67,7 @@ const TopicContent = (props) => {
     e.preventDefault()
     if(answer !== ""){
       // setAnswerId(answerId => answerId + 1)
-      addAnswer([...answers,{ answer : answer }])
+      addAnswer([...answers,{ answer : answer, user:state.currentUser.displayName }])
       console.log("submit",answer)
       console.log(answers)
       saveAnswer()
@@ -82,7 +82,7 @@ const TopicContent = (props) => {
         Title : {props.location.state.topicInfo.title}
       </Comment>
       <Comment>
-        UserName : {state.currentUser.displayName}
+        UserName : {props.location.state.topicInfo.createdUser}
       </Comment>
       <Comment>
         Discription : {props.location.state.topicInfo.discription}

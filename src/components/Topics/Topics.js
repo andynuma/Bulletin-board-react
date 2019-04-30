@@ -22,7 +22,7 @@ const Topics = () => {
     if(title !=="" && discription !== ""){
       setTopics(
         [...topics,
-          { title: title, discription: discription }
+          { title: title, discription: discription,createdUser:state.currentUser.displayName }
         ]
       )
     }
@@ -41,7 +41,6 @@ const Topics = () => {
         discription:discription,
         createdUser: state.currentUser.displayName,
         createdAt:timeStamp
-        
       })
       console.log(res.id)
     } catch (error){
@@ -55,9 +54,9 @@ const Topics = () => {
     const snap = await db.collection("topics").orderBy("createdAt").get()
     await snap.forEach((doc) => {
       loadedTopics.push(
-        { id: `${doc.id}`, title: `${doc.data().title}`, discription: `${doc.data().discription}` }
+        { id: `${doc.id}`, title: `${doc.data().title}`, discription: `${doc.data().discription}`,createdUser:`${doc.data().createdUser}` }
       )
-      console.log(doc.id)
+      // console.log(doc.id)
     })
     setTopics(loadedTopics)
   }
@@ -70,6 +69,7 @@ const Topics = () => {
         <Topic
           info={topicInfo}
           key={topicInfo.id}
+          createdUser={topicInfo.createdUser}
           title={topicInfo.title}
           discription={topicInfo.discription}
         />
@@ -97,7 +97,9 @@ const Topics = () => {
         </ul>
       </form>
 
-      {displayTopics(topics)}
+      <div className="topic_container">
+        {displayTopics(topics)}
+      </div>
     </div>
   )
 }

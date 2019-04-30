@@ -1,7 +1,8 @@
-import React,{ useState, useCallback, useEffect } from "react"
+import React,{ useState, useCallback, useContext} from "react"
 import {Form, Segment, Grid, Header, Button} from "semantic-ui-react"
 import firebase from "../../firebase"
 import md5 from "md5"
+import { Store } from "../../store"
 
 
 const Register = () => {
@@ -11,10 +12,12 @@ const Register = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("")
   const [errors, setError] = useState([])
 
-  useEffect(() => {
-    console.log("mounted")
-    // console.log(db)
-  })
+  const {dispatch, state } = useContext(Store)
+
+  // useEffect(() => {
+  //   console.log("mounted")
+  //   // console.log(db)
+  // },[])
 
   const handleNameChange = useCallback((e) => setName(e.target.value))
   const handleMailChange = useCallback((e) => setMail(e.target.value))
@@ -70,6 +73,7 @@ const Register = () => {
           photoURL: `http://gravatar.com/avatar/${md5(mail)}?d=identicon`
         })
         await saveUser(user)
+        dispatch({type:"SET_USER", payload:user })
         console.log("user saved")
       }
     } catch(error){

@@ -11,7 +11,7 @@ const Login = () => {
   useEffect(() => {
     console.log("mounted")
     // console.log(db)
-  })
+  },[])
 
   const handleMailChange = useCallback((e) => setMail(e.target.value))
   const handlePassWordChange = useCallback((e) => setPassword(e.target.value))

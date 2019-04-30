@@ -4,3 +4,13 @@ body,
   height: 100vh;
   padding: 1em;
 }
+
+.topic{
+  margin: 10px;
+  padding: 5px;
+}
+
+.topic_container{
+  display: flex;
+  flex-wrap: wrap;
+}

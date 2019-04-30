@@ -18,7 +18,7 @@ const Answer = ({ answer, user }) => {
 
   return(
     <Segment>
-      user : {user.displayName}
+      user : {user}
       <Message>
         {answer.answer}
       </Message>

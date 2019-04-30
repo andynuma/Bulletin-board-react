@@ -21,12 +21,8 @@ const Root = (props) => {
     firebase.auth().onAuthStateChanged( user => {
       if(user){
         console.log("user",user)
-        console.log(props.history)
-        //トピックページのリロードに対応したいけどできなかった
-        // Linkタグによってstateを渡しているので、トピックページからエントリーすると
-        // stateが未定義のままレンダリングが走って、undefinedになる
-        props.history.push("/")
         dispatch({type:"SET_USER", payload:user})
+        props.history.push("/")
       } else {
         props.history.push("/login")
         dispatch({type:"CLEAR_USER"})
