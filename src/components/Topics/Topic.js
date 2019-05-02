@@ -1,8 +1,14 @@
-import React from "react"
+import React,{ useEffect } from "react"
 import { Segment,Comment } from "semantic-ui-react"
 import { Link, withRouter} from "react-router-dom";
+import md5 from "md5"
 
 const Topic = ({ info }) => {
+
+  useEffect(() => {
+    console.log(info)
+    // console.log(md5(info.title))
+  },[])
 
   return(
     <div className="topic">

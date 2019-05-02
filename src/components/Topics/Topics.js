@@ -4,6 +4,8 @@ import firebase from "firebase"
 import { Store } from "../../store"
 import { Header } from "semantic-ui-react"
 import { withRouter } from "react-router-dom";
+import md5 from "md5"
+
 
 const Topics = () => {
   const [title, setTitle] = useState("")
@@ -22,7 +24,7 @@ const Topics = () => {
     if(title !=="" && discription !== ""){
       setTopics(
         [...topics,
-          { title: title, discription: discription,createdUser:state.currentUser.displayName }
+          { id : md5(title), title: title, discription: discription,createdUser:state.currentUser.displayName }
         ]
       )
     }
@@ -36,13 +38,14 @@ const Topics = () => {
     const db =  await firebase.firestore()
     const timeStamp = await Date.now()
     try{
-      const res = await db.collection("topics").add({
+      const res = await db.collection("topics").doc(md5(title)).set({
+        id:md5(title),
         title:title,
         discription:discription,
         createdUser: state.currentUser.displayName,
         createdAt:timeStamp
       })
-      console.log(res.id)
+      console.log(res)
     } catch (error){
       console.log(error)
     }
@@ -54,14 +57,17 @@ const Topics = () => {
     const snap = await db.collection("topics").orderBy("createdAt").get()
     await snap.forEach((doc) => {
       loadedTopics.push(
-        { id: `${doc.id}`, title: `${doc.data().title}`, discription: `${doc.data().discription}`,createdUser:`${doc.data().createdUser}` }
+        { id: `${doc.data().id}`, title: `${doc.data().title}`, discription: `${doc.data().discription}`,createdUser:`${doc.data().createdUser}` }
       )
-      // console.log(doc.id)
+      console.log(doc.id)
     })
     setTopics(loadedTopics)
   }
 
-  const onTitleChange = useCallback((e) => setTitle(e.target.value),[])
+  const onTitleChange = useCallback((e) => {
+    setTitle(e.target.value)
+  },[])
+
   const onDiscriptionChange = useCallback((e) => setDiscription(e.target.value),[])
 
   const displayTopics = (topicsArray) => (

@@ -3,6 +3,7 @@ import { Button,Comment, Segment } from "semantic-ui-react"
 import {  withRouter } from "react-router-dom"
 import Answer from "./Answer"
 import { Store } from "../../store"
+import md5 from "md5"
 
 import firebase from "../../firebase"
 
@@ -28,6 +29,7 @@ const TopicContent = (props) => {
     () => {
         addAnswerListener()
         console.log("useEffect:",answer)
+        console.log(props.location.state.topicInfo)
         console.log(Date.now())
     },[])
 
@@ -35,12 +37,13 @@ const TopicContent = (props) => {
     const db =  await firebase.firestore()
     try{
       const timestamp = Date.now()
-      const res = await db.collection("topics").doc(props.location.state.topicInfo.id).collection("answers").add({
+      const res = await db.collection("topics").doc(props.location.state.topicInfo.id).collection("answers").doc(md5(answer)).set({
+        id: md5(answer),
         answer:answer,
         createdUser: state.currentUser.displayName,
         createdAt:timestamp
       })
-      console.log(res.id)
+      console.log(res)
     } catch (error){
       console.log(error)
     }
@@ -67,7 +70,7 @@ const TopicContent = (props) => {
     e.preventDefault()
     if(answer !== ""){
       // setAnswerId(answerId => answerId + 1)
-      addAnswer([...answers,{ answer : answer, user:state.currentUser.displayName }])
+      addAnswer([...answers,{ id:md5(answer) ,answer : answer, user:state.currentUser.displayName }])
       console.log("submit",answer)
       console.log(answers)
       saveAnswer()
